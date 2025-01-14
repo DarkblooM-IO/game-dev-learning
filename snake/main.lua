@@ -2,6 +2,7 @@ local socket = require "socket"
 
 PIXEL_SIZE = 15
 SPEED = 0.1
+GROWTH_FACTOR = 3
 
 function love.load()
   grid = {}
@@ -21,6 +22,10 @@ function love.load()
 end
 
 function love.update(dt)
+  table.insert(snake.path, 1, snake.pos)
+
+  if #snake.path > snake.length then table.remove(snake.path, #snake.path) end
+
   if last_key == "up" and snake.facing ~= "down" then snake.facing = "up"
   elseif last_key == "down" and snake.facing ~= "up" then snake.facing = "down"
   elseif last_key == "left" and snake.facing ~= "right" then snake.facing = "left"
@@ -35,10 +40,19 @@ function love.update(dt)
 end
 
 function love.draw()
+  love.graphics.setColor(0, 0, 0, 1)
+  love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+
+  love.graphics.setColor(255, 255, 255, 1)
   love.graphics.rectangle("fill", snake.pos.x * PIXEL_SIZE, snake.pos.y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE)
+
+  for i = 1, #snake.path do
+    love.graphics.rectangle("fill", snake.path[i].x * PIXEL_SIZE, snake.path[i].y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE)
+  end
 end
 
 function love.keypressed(key, scancode, isrepeat)
   if scancode == "escape" then love.event.quit() end
+  if scancode == "return" then snake.length = snake.length + GROWTH_FACTOR end -- DEBUG
   last_key = scancode
 end
