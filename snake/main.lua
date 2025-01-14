@@ -14,7 +14,7 @@ function love.load()
 
   snake = {}
     snake.pos = {y = 0, x = 0}
-    snake.length = 0
+    snake.length = GROWTH_FACTOR
     snake.path = {}
     snake.facing = nil
 
@@ -53,6 +53,5 @@ end
 
 function love.keypressed(key, scancode, isrepeat)
   if scancode == "escape" then love.event.quit() end
-  if scancode == "return" then snake.length = snake.length + GROWTH_FACTOR end -- DEBUG
   last_key = scancode
 end
