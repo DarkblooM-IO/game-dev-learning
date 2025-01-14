@@ -22,7 +22,7 @@ function love.load()
 end
 
 function love.update(dt)
-  table.insert(snake.path, 1, snake.pos)
+  table.insert(snake.path, 1, {y = snake.pos.y, x = snake.pos.x})
 
   if #snake.path > snake.length then table.remove(snake.path, #snake.path) end
 
@@ -53,5 +53,6 @@ end
 
 function love.keypressed(key, scancode, isrepeat)
   if scancode == "escape" then love.event.quit() end
+  if scancode == "return" then snake.length = snake.length + GROWTH_FACTOR end
   last_key = scancode
 end
