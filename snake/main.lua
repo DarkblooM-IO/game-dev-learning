@@ -1,0 +1,44 @@
+local socket = require "socket"
+
+PIXEL_SIZE = 15
+SPEED = 0.1
+
+function love.load()
+  grid = {}
+  for y = 1, love.graphics.getHeight() / PIXEL_SIZE do
+    for x = 1, love.graphics.getWidth() / PIXEL_SIZE do
+      table.insert(grid, 0)
+    end
+  end
+
+  snake = {}
+    snake.pos = {y = 0, x = 0}
+    snake.length = 0
+    snake.path = {}
+    snake.facing = nil
+
+  last_key = nil
+end
+
+function love.update(dt)
+  if last_key == "up" and snake.facing ~= "down" then snake.facing = "up"
+  elseif last_key == "down" and snake.facing ~= "up" then snake.facing = "down"
+  elseif last_key == "left" and snake.facing ~= "right" then snake.facing = "left"
+  elseif last_key == "right" and snake.facing ~= "left" then snake.facing = "right" end
+
+  if snake.facing == "up" then snake.pos.y = snake.pos.y - 1
+  elseif snake.facing == "down" then snake.pos.y = snake.pos.y + 1
+  elseif snake.facing == "left" then snake.pos.x = snake.pos.x - 1
+  elseif snake.facing == "right" then snake.pos.x = snake.pos.x + 1 end
+
+  socket.sleep(SPEED)
+end
+
+function love.draw()
+  love.graphics.rectangle("fill", snake.pos.x * PIXEL_SIZE, snake.pos.y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE)
+end
+
+function love.keypressed(key, scancode, isrepeat)
+  if scancode == "escape" then love.event.quit() end
+  last_key = scancode
+end
