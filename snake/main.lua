@@ -53,6 +53,6 @@ end
 
 function love.keypressed(key, scancode, isrepeat)
   if scancode == "escape" then love.event.quit() end
-  if scancode == "return" then snake.length = snake.length + GROWTH_FACTOR end
+  if scancode == "return" then snake.length = snake.length + GROWTH_FACTOR end -- DEBUG
   last_key = scancode
 end
