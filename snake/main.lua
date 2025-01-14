@@ -4,7 +4,25 @@ PIXEL_SIZE = 15
 SPEED = 0.1
 GROWTH_FACTOR = 3
 
+function drawPixel(grid, y, x)
+  love.graphics.setColor(255, 255, 255, math.min(grid[y][x], 1))
+  love.graphics.rectangle("fill", x, y, PIXEL_SIZE, PIXEL_SIZE)
+end
+
+function randomFreeSpot(grid)
+  local freespots = {}
+  for y = 1, #grid do
+    for x = 1, #grid[y] do
+      if grid[y][x] == 0 then table.insert(freespots, {y = y, x = x}) end
+    end
+  end
+  local choice = freespots[math.random(#freespots)]
+  return {y = choice.y, x = choice.x}
+end
+
 function love.load()
+  math.randomseed(socket.gettime() * 1000)
+
   grid = {}
   for y = 1, love.graphics.getHeight() / PIXEL_SIZE do
     for x = 1, love.graphics.getWidth() / PIXEL_SIZE do
@@ -13,7 +31,7 @@ function love.load()
   end
 
   snake = {}
-    snake.pos = {y = 0, x = 0}
+    snake.pos = randomFreeSpot(grid)
     snake.length = GROWTH_FACTOR
     snake.path = {}
     snake.facing = nil
@@ -42,13 +60,6 @@ end
 function love.draw()
   love.graphics.setColor(0, 0, 0, 1)
   love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
-
-  love.graphics.setColor(255, 255, 255, 1)
-  love.graphics.rectangle("fill", snake.pos.x * PIXEL_SIZE, snake.pos.y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE)
-
-  for i = 1, #snake.path do
-    love.graphics.rectangle("fill", snake.path[i].x * PIXEL_SIZE, snake.path[i].y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE)
-  end
 end
 
 function love.keypressed(key, scancode, isrepeat)
