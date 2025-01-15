@@ -1,3 +1,7 @@
+TILE_SIZE = 10
+GROWTH_FACTOR = 3
+SPEED = 0.05
+
 function love.load()
 end
 
