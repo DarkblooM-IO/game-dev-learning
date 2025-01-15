@@ -45,11 +45,11 @@ function Grid:draw()
         g = 0
         b = 0
       end
-
-      love.graphics.setColor(r, g, b, math.min(self.cells[y][x], 1))
-      love.graphics.rectangle("fill", x * self.tile_size - self.tile_size, y * self.tile_size - self.tile_size, self.tile_size, self.tile_size)
     end
   end
+
+  love.graphics.setColor(r, g, b, math.min(self.cells[y][x], 1))
+  love.graphics.rectangle("fill", x * self.tile_size - self.tile_size, y * self.tile_size - self.tile_size, self.tile_size, self.tile_size)
 end
 
 return Grid
