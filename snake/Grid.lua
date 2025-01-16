@@ -1,7 +1,7 @@
 local Grid = {}
 Grid.__index = Grid
 
-function Grid.new(tile_size)
+function Grid.new(tile_size, snake)
   local self = setmetatable({}, Grid)
 
   self.tile_size = tile_size
@@ -17,6 +17,8 @@ function Grid.new(tile_size)
     table.insert(self.cells, row)
   end
 
+  self.snake = snake
+
   return self
 end
 
@@ -29,6 +31,11 @@ function Grid:randomFreeCell()
   end
   local cell = free_cells[math.random(#free_cells)]
   return cell.x, cell.y
+end
+
+function Grid:spawnFruit()
+  local x, y = self:randomFreeCell()
+  self.cells[y][x] = 2
 end
 
 function Grid:update()

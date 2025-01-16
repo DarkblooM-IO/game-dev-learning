@@ -1,5 +1,6 @@
 local socket = require "socket"
 local Grid = require "Grid"
+local Snake = require "Snake"
 
 TILE_SIZE = 10
 GROWTH_FACTOR = 3
