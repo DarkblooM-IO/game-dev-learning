@@ -15,8 +15,6 @@ end
 function love.load()
   love.graphics.setDefaultFilter("nearest")
 
-  last_key = nil
-
   grid = {}
 
   local w = math.floor(love.graphics.getWidth() / PIXEL_SIZE)
@@ -42,6 +40,13 @@ function love.load()
 end
 
 function love.update(dt)
+  if snake.facing == "up" then table.insert(snake.body, 1, snake.body[1] + utils.Vec2.new(0, -1))
+  elseif snake.facing == "down" then table.insert(snake.body, 1, snake.body[1] + utils.Vec2.new(0, 1))
+  elseif snake.facing == "left" then table.insert(snake.body, 1, snake.body[1] + utils.Vec2.new(-1, 0))
+  elseif snake.facing == "right" then table.insert(snake.body, 1, snake.body[1] + utils.Vec2.new(1, 0)) end
+
+  if #snake.body > snake.length then table.remove(snake.body[#snake.body]) end
+
   socket.sleep(SPEED)
 end
 
@@ -71,5 +76,9 @@ end
 
 function love.keypressed(key, scancode, insert)
   if scancode == "escape" then love.event.quit() end
-  last_key = scancode
+
+  if scancode == "w" and snake.facing ~= "down" then snake.facing = "up"
+  elseif scancode == "s" and snake.facing ~= "up" then snake.facing = "down"
+  elseif scancode == "a" and snake.facing ~= "right" then snake.facing = "left"
+  elseif scancode == "d" and snake.facing ~= "left" then snake.facing = "right" end
 end
