@@ -14,10 +14,6 @@ function bounceBall(paddle)
   ball.vel.x = ball.vel.x * -1
 
   ball.vel.y = BALL_SPEED * angle
-  -- local current_speed = math.sqrt(ball.vel.x^2 + ball.vel.y^2)
-  -- if current_speed > BALL_SPEED then
-  --   ball.vel = ball.vel * (BALL_SPEED / current_speed)
-  -- end
 end
 
 function love.load()
@@ -46,7 +42,7 @@ function love.update(dt)
     player.score = player.score + 1
     bounceBall(player)
   elseif ball.pos.x + 10 >= lg.getWidth() - PADDLE_SIZE.w and ball.pos.y >= bot.y and ball.pos.y <= bot.y + PADDLE_SIZE.h then
-    bounceBall(bot)
+    ball.vel.x = ball.vel.x * -1
   elseif ball.pos.y <= 0 then
     ball.pos.y = 0
     ball.vel.y = ball.vel.y * -1 
