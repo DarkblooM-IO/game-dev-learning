@@ -42,13 +42,19 @@ function love.update(dt)
   elseif ball.pos.y + 10 >= lg.getHeight() then
     ball.pos.y = lg.getHeight() - 10
     ball.vel.y = ball.vel.y * -1
+  elseif ball.pos.x <= 0 or ball.pos.x + 10 >= lg.getWidth() then
+    love.load()
   end
 
   -- player update
-  player.movement = {lk.isDown("c") and 1 or 0, lk.isDown("v") and 1 or 0}
+  player.movement = {(lk.isDown("c") and player.y > 0) and 1 or 0, (lk.isDown("v") and player.y + PADDLE_SIZE.h < lg.getHeight()) and 1 or 0}
   player.y = player.y + (player.movement[2] - player.movement[1]) * PADDLE_SPEED * dt
 
   -- bot update
+  local newpos = (ball.pos.y + 5) - math.floor(PADDLE_SIZE.h / 2)
+  if (ball.pos.y + 5) - math.floor(PADDLE_SIZE.h / 2) >= 0 and (ball.pos.y + 5) + math.floor(PADDLE_SIZE.h / 2) <= lg.getHeight() then
+    bot.y = newpos
+  end
 end
 
 function love.draw()
