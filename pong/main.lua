@@ -1,4 +1,5 @@
 local ut = require "utils"
+local socket = require "socket"
 local lg = love.graphics
 local lk = love.keyboard
 
@@ -13,13 +14,15 @@ function bounceBall(paddle)
   ball.vel.x = ball.vel.x * -1
 
   ball.vel.y = BALL_SPEED * angle
-  local current_speed = math.sqrt(ball.vel.x^2 + ball.vel.y^2)
-  if current_speed > BALL_SPEED then
-    ball.vel = ball.vel * (BALL_SPEED / current_speed)
-  end
+  -- local current_speed = math.sqrt(ball.vel.x^2 + ball.vel.y^2)
+  -- if current_speed > BALL_SPEED then
+  --   ball.vel = ball.vel * (BALL_SPEED / current_speed)
+  -- end
 end
 
 function love.load()
+  math.randomseed(math.floor(socket.gettime() * 1000))
+
   ball = {}
     ball.pos = ut.Vec2.new(math.floor(lg.getWidth() / 2), math.floor(lg.getHeight() / 2))
     ball.vel = ut.Vec2.new(0, 0)
@@ -35,7 +38,7 @@ end
 
 function love.update(dt)
   -- ball update
-  if ball.vel == ut.Vec2.new(0, 0) and lk.isDown("space") then ball.vel = ball.vel + ut.Vec2.new(-BALL_SPEED, 0) end
+  if ball.vel == ut.Vec2.new(0, 0) and lk.isDown("space") then ball.vel = ball.vel + ut.Vec2.new(-BALL_SPEED, math.random(-BALL_SPEED, BALL_SPEED)) end
 
   ball.pos = ball.pos + ball.vel * dt
 
