@@ -1,8 +1,3 @@
---[[
-TODO:
-- bounce ball on paddle
---]]
-
 local ut = require "utils"
 local lg = love.graphics
 local lk = love.keyboard
