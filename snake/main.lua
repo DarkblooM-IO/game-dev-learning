@@ -1,6 +1,6 @@
-local lg = love.graphics
 local ut = require "utils"
 local socket = require "socket"
+local lg = love.graphics
 
 PIXEL_SIZE    = 20
 GROWTH_FACTOR = 3
