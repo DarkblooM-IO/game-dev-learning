@@ -4,7 +4,7 @@ TODO:
 --]]
 
 local ut = require "utils"
-local lg = love.graphics
+-- local lg = love.graphics
 local lk = love.keyboard
 
 PADDLE_SIZE = {w = 10, h = math.floor((25 / 100) * lg.getHeight())}
