@@ -88,6 +88,14 @@ function love.draw()
   lg.setColor(BG_COLOR)
   lg.rectangle("fill", 0, 0, lg.getWidth(), lg.getHeight())
 
+  -- print score
+  local score = tostring((snake.length / GROWTH_FACTOR) - 1)
+  local font = lg.newFont(24)
+  local x = math.floor(lg.getWidth() / 2) - math.floor(font:getWidth(score) / 2)
+  local y = math.floor(lg.getHeight() / 2) - math.floor(font:getHeight() / 2)
+  lg.setColor(0, 0, 0, 0.3)
+  lg.print(score, font, x, y)
+
   -- draw fruit
   lg.setColor(FRUIT_COLOR)
   drawPixel(fruit.x, fruit.y)
@@ -101,11 +109,6 @@ function love.draw()
     lg.setColor(BG_COLOR)
     drawPixel(snake.body[i].x, snake.body[i].y, true)
   end
-
-  -- print score
-  local font = lg.newFont(16)
-  lg.setColor(0, 0, 0)
-  lg.print("Score: "..tostring((snake.length / GROWTH_FACTOR) - 1), font, 5, 5)
 end
 
 function love.keypressed(key, scancode, insert)
