@@ -31,31 +31,46 @@ function love.update(dt)
 
   ball.pos = ball.pos + ball.vel * dt
 
-  if (ball.pos.x <= PADDLE_SIZE.w and ball.pos.y >= player.y and ball.pos.y <= player.y + PADDLE_SIZE.h) then
+  if ball.pos.x <= PADDLE_SIZE.w and ball.pos.y >= player.y and ball.pos.y <= player.y + PADDLE_SIZE.h then
     player.score = player.score + 1
-    ball.vel = ball.vel * -1
-  elseif (ball.pos.x + 10 >= lg.getWidth() - PADDLE_SIZE.w and ball.pos.y >= bot.y and ball.pos.y <= bot.y + PADDLE_SIZE.h) then
-    ball.vel = ball.vel * -1
+    ball.vel.x = ball.vel.x * -1
+  elseif ball.pos.x + 10 >= lg.getWidth() - PADDLE_SIZE.w and ball.pos.y >= bot.y and ball.pos.y <= bot.y + PADDLE_SIZE.h then
+    ball.vel.x = ball.vel.x * -1
+  elseif ball.pos.y <= 0 then
+    ball.pos.y = 0
+    ball.vel.y = ball.vel.y * -1 
+  elseif ball.pos.y + 10 >= lg.getHeight() then
+    ball.pos.y = lg.getHeight() - 10
+    ball.vel.y = ball.vel.y * -1
   end
 
   -- player update
   player.movement = {lk.isDown("c") and 1 or 0, lk.isDown("v") and 1 or 0}
   player.y = player.y + (player.movement[2] - player.movement[1]) * PADDLE_SPEED * dt
+
+  -- bot update
 end
 
 function love.draw()
   -- reset display
   lg.setColor(0, 0, 0)
   lg.rectangle("fill", 0, 0, lg.getWidth(), lg.getHeight())
-  lg.setColor(1, 1, 1)
 
   -- print score
+  lg.setColor(1, 1, 1, 0.5)
   local score = "Score: "..tostring(player.score)
   local font = lg.newFont(14)
   local xpos = math.floor(lg.getWidth() / 2) - math.floor(font:getWidth(score) / 2)
   lg.print(score, font, xpos, 10)
 
+  -- print controls
+  local controls = "[SPACE] - launch ball\n[C] / [V] - move paddle up/down"
+  xpos = math.floor(lg.getWidth() / 2) - math.floor(font:getWidth(controls) / 2)
+  local ypos = math.floor(lg.getHeight() / 2) - math.floor(font:getHeight() / 2)
+  if ball.vel == ut.Vec2.new(0, 0) then lg.print(controls, font, xpos, ypos) end
+
   -- draw player
+  lg.setColor(1, 1, 1)
   lg.rectangle("fill", 0, player.y, PADDLE_SIZE.w, PADDLE_SIZE.h)
 
   -- draw bot
