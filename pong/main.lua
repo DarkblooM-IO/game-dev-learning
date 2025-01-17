@@ -11,6 +11,19 @@ PADDLE_SIZE = {w = 10, h = math.floor((25 / 100) * lg.getHeight())}
 PADDLE_SPEED = 450
 BALL_SPEED = 300
 
+function bounceBall(paddle)
+  local hitpos = (ball.pos.y - paddle.y) / PADDLE_SIZE.h
+  local angle = (hitpos - 0.5) * 2
+
+  ball.vel.x = ball.vel.x * -1
+
+  ball.vel.y = BALL_SPEED * angle
+  local current_speed = math.sqrt(ball.vel.x^2 + ball.vel.y^2)
+  if current_speed > BALL_SPEED then
+    ball.vel = ball.vel * (BALL_SPEED / current_speed)
+  end
+end
+
 function love.load()
   ball = {}
     ball.pos = ut.Vec2.new(math.floor(lg.getWidth() / 2), math.floor(lg.getHeight() / 2))
@@ -27,15 +40,15 @@ end
 
 function love.update(dt)
   -- ball update
-  if ball.vel == ut.Vec2.new(0, 0) and lk.isDown("space") then ball.vel = ball.vel + ut.Vec2.new(-BALL_SPEED, BALL_SPEED) end
+  if ball.vel == ut.Vec2.new(0, 0) and lk.isDown("space") then ball.vel = ball.vel + ut.Vec2.new(-BALL_SPEED, 0) end
 
   ball.pos = ball.pos + ball.vel * dt
 
   if ball.pos.x <= PADDLE_SIZE.w and ball.pos.y >= player.y and ball.pos.y <= player.y + PADDLE_SIZE.h then
     player.score = player.score + 1
-    ball.vel.x = ball.vel.x * -1
+    bounceBall(player)
   elseif ball.pos.x + 10 >= lg.getWidth() - PADDLE_SIZE.w and ball.pos.y >= bot.y and ball.pos.y <= bot.y + PADDLE_SIZE.h then
-    ball.vel.x = ball.vel.x * -1
+    bounceBall(bot)
   elseif ball.pos.y <= 0 then
     ball.pos.y = 0
     ball.vel.y = ball.vel.y * -1 
