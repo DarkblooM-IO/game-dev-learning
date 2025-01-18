@@ -1,6 +1,7 @@
+_G.lg = love.graphics
+
 local ut = require "utils"
 local socket = require "socket"
-local lg = love.graphics
 
 PIXEL_SIZE    = 20
 GROWTH_FACTOR = 3
@@ -10,11 +11,11 @@ BG_COLOR      = {love.math.colorFromBytes(112, 181, 91)}
 FRUIT_COLOR   = {love.math.colorFromBytes(189, 40,  40)}
 SNAKE_COLOR   = {love.math.colorFromBytes(87,  86,  184)}
 
-function getWidth()
+local function getWidth()
   return math.floor(lg.getWidth() / PIXEL_SIZE)
 end
 
-function getHeight()
+local function getHeight()
   return math.floor(lg.getHeight() / PIXEL_SIZE)
 end
 
