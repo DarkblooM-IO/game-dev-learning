@@ -1,11 +1,12 @@
+_G.lg = love.graphics
+_G.lk = love.keyboard
+
 local ut = require "utils"
 local socket = require "socket"
-local lg = love.graphics
-local lk = love.keyboard
 
 PADDLE_SIZE = {w = 10, h = math.floor((25 / 100) * lg.getHeight())}
 PADDLE_SPEED = 450
-BALL_SPEED = 300
+BALL_SPEED = 400
 
 function bounceBall(paddle)
   local hitpos = (ball.pos.y - paddle.y) / PADDLE_SIZE.h
@@ -19,9 +20,12 @@ end
 function love.load()
   math.randomseed(math.floor(socket.gettime() * 1000))
 
+  font = lg.newFont(24)
+
   ball = {}
     ball.pos = ut.Vec2.new(math.floor(lg.getWidth() / 2), math.floor(lg.getHeight() / 2))
     ball.vel = ut.Vec2.new(0, 0)
+    ball.contact = false
 
   player = {}
     player.score = 0
@@ -38,10 +42,12 @@ function love.update(dt)
 
   ball.pos = ball.pos + ball.vel * dt
 
-  if ball.pos.x <= PADDLE_SIZE.w and ball.pos.y >= player.y and ball.pos.y <= player.y + PADDLE_SIZE.h then
+  if not ball.contact and ball.pos.x <= PADDLE_SIZE.w and ball.pos.y >= player.y and ball.pos.y <= player.y + PADDLE_SIZE.h then
+    ball.contact = true
     player.score = player.score + 1
     bounceBall(player)
-  elseif ball.pos.x + 10 >= lg.getWidth() - PADDLE_SIZE.w and ball.pos.y >= bot.y and ball.pos.y <= bot.y + PADDLE_SIZE.h then
+  elseif not ball.contact and ball.pos.x + 10 >= lg.getWidth() - PADDLE_SIZE.w and ball.pos.y >= bot.y and ball.pos.y <= bot.y + PADDLE_SIZE.h then
+    ball.contact = true
     ball.vel.x = ball.vel.x * -1
   elseif ball.pos.y <= 0 then
     ball.pos.y = 0
@@ -51,6 +57,8 @@ function love.update(dt)
     ball.vel.y = ball.vel.y * -1
   elseif ball.pos.x <= 0 or ball.pos.x + 10 >= lg.getWidth() then
     love.load()
+  else
+    ball.contact = false
   end
 
   -- player update
@@ -69,18 +77,12 @@ function love.draw()
   lg.setColor(0, 0, 0)
   lg.rectangle("fill", 0, 0, lg.getWidth(), lg.getHeight())
 
-  -- print score
+  -- print controls/score
   lg.setColor(1, 1, 1, 0.5)
-  local score = "Score: "..tostring(player.score)
-  local font = lg.newFont(14)
-  local xpos = math.floor(lg.getWidth() / 2) - math.floor(font:getWidth(score) / 2)
-  lg.print(score, font, xpos, 10)
-
-  -- print controls
-  local controls = "[SPACE] - launch ball\n[C] / [V] - move paddle up/down"
-  xpos = math.floor(lg.getWidth() / 2) - math.floor(font:getWidth(controls) / 2)
-  local ypos = math.floor(lg.getHeight() / 2) - math.floor(font:getHeight() / 2)
-  if ball.vel == ut.Vec2.new(0, 0) then lg.print(controls, font, xpos, ypos) end
+  local str = ball.vel == ut.Vec2.new(0, 0) and "Press C/V to go up/down\nPress SPACE to launch the ball" or tostring(player.score)
+  local x = math.floor(lg.getWidth() / 2) - math.floor(font:getWidth(str) / 2)
+  local y = math.floor(lg.getHeight() / 2) - math.floor(font:getHeight() / 2)
+  lg.print(str, font, x, y)
 
   -- draw player
   lg.setColor(1, 1, 1)
