@@ -11,9 +11,7 @@ BALL_SPEED = 400
 function bounceBall(paddle)
   local hitpos = (ball.pos.y - paddle.y) / PADDLE_SIZE.h
   local angle = (hitpos - 0.5) * 2
-
   ball.vel.x = ball.vel.x * -1
-
   ball.vel.y = BALL_SPEED * angle
 end
 
