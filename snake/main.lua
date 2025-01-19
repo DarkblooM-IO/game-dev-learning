@@ -19,7 +19,7 @@ local function getHeight()
   return math.floor(lg.getHeight() / PIXEL_SIZE)
 end
 
-function drawPixel(x, y, line)
+local function drawPixel(x, y, line)
   lg.rectangle(line and "line" or "fill", x * PIXEL_SIZE - PIXEL_SIZE, y * PIXEL_SIZE - PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE)
 end
 
