@@ -6,6 +6,7 @@ local pieces = require "pieces"
 local display
 local grid = {}
 local current_piece = {}
+local next_piece = {}
 
 function love.load()
   math.randomseed(math.floor(socket.gettime()) * 1000)
