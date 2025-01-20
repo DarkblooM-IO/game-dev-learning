@@ -10,7 +10,6 @@ local display
 local next_display
 local held_display
 local font
-
 local grid
 
 local current_piece
@@ -70,10 +69,9 @@ function love.load()
 end
 
 function love.update(dt)
-  if timer.current == 0 then
-    -- current_piece.pos.y = current_piece.pos.y + 1
+  if timer.current <= 0 then
   end
-  timer.current = timer.current > 0 and timer.current - 1 or timer.max
+  timer.current = timer.current > 0 and timer.current - 1 * level or timer.max
 end
 
 function love.draw()
@@ -83,6 +81,11 @@ function love.draw()
   lg.rectangle("fill", 0, 0, display:getWidth(), display:getHeight())
 
   lg.setColor(1, 1, 1)
+  for y = 1, #grid do
+    for x = 1, #grid[y] do
+      if grid[y][x] == 1 then pieces.drawPixel(x, y) end
+    end
+  end
   pieces.drawPiece(pieces.tetrominos[current_piece.index], current_piece.state, current_piece.pos.x, current_piece.pos.y)
 
   lg.setCanvas(next_display)
@@ -97,9 +100,9 @@ function love.draw()
   x = UI_MARGIN
   y = UI_MARGIN
 
-  lg.print(string.format("Score: %d", score), x, y)
+  lg.print(string.format("Score: %d\nLevel %d", score, level), x, y)
 
-  y = y + font:getHeight() + UI_MARGIN
+  y = y + font:getHeight() * 2 + UI_MARGIN
 
   lg.print("Next:", x, y)
 
