@@ -4,12 +4,20 @@ local socket = require "socket"
 local pieces = require "pieces"
 
 local display
+local grid = {}
 local current_piece
 local current_state
 
 function love.load()
   math.randomseed(math.floor(socket.gettime()) * 1000)
   display = lg.newCanvas(lg.getHeight() * 1/2, lg.getHeight())
+  for y = 1, display:getHeight() / pieces.PIXEL_SIZE do
+    local row = {}
+    for x = 1, display:getWidth() / pieces.PIXEL_SIZE do
+      table.insert(row, 0)
+    end
+    table.insert(grid, row)
+  end
   current_piece = 1
   current_state = 1
 end
@@ -20,15 +28,8 @@ end
 function love.draw()
   lg.setCanvas(display)
 
-  lg.setColor(0, 0, 0)
+  lg.setColor(.1,.1,.1)
   lg.rectangle("fill", 0, 0, display:getWidth(), display:getHeight())
-
-  lg.setColor(1, 1, 1, .3)
-  for y = 1, display:getHeight() / pieces.PIXEL_SIZE do
-    for x = 1, display:getWidth() / pieces.PIXEL_SIZE do
-      pieces.drawPixel(x, y, true)
-    end
-  end
 
   lg.setColor(1, 1, 1)
   pieces.drawPiece(pieces.tetrominos[current_piece], current_state, 0, 0)
