@@ -5,12 +5,13 @@ local pieces = require "pieces"
 
 local display
 local grid = {}
-local current_piece
-local current_state
+local current_piece = {}
 
 function love.load()
   math.randomseed(math.floor(socket.gettime()) * 1000)
+
   display = lg.newCanvas(lg.getHeight() * 1/2, lg.getHeight())
+
   for y = 1, display:getHeight() / pieces.PIXEL_SIZE do
     local row = {}
     for x = 1, display:getWidth() / pieces.PIXEL_SIZE do
@@ -18,8 +19,10 @@ function love.load()
     end
     table.insert(grid, row)
   end
-  current_piece = 1
-  current_state = 1
+
+  current_piece.index = 1
+  current_piece.state = 1
+  current_piece.pos = {x = 0, y = 0}
 end
 
 function love.update(dt)
@@ -32,7 +35,7 @@ function love.draw()
   lg.rectangle("fill", 0, 0, display:getWidth(), display:getHeight())
 
   lg.setColor(1, 1, 1)
-  pieces.drawPiece(pieces.tetrominos[current_piece], current_state, 0, 0)
+  pieces.drawPiece(pieces.tetrominos[current_piece.index], current_piece.state, 0, 0)
 
   local x = (lg.getWidth() / 2) - (display:getWidth() / 2)
   local y = (lg.getHeight() / 2) - (display:getHeight() / 2)
@@ -43,10 +46,10 @@ end
 function love.keypressed(key, scancode, isrepeat)
   if scancode == "escape" then love.event.quit() end
   if scancode == "return" then
-    if current_state < #pieces.tetrominos[current_piece].states then current_state = current_state + 1
+    if current_piece.state < #pieces.tetrominos[current_piece.index].states then current_piece.state = current_piece.state + 1
     else
-      current_state = 1
-      current_piece = current_piece < #pieces.tetrominos and current_piece + 1 or 1
+      current_piece.state = 1
+      current_piece.index = current_piece.index < #pieces.tetrominos and current_piece.index + 1 or 1
     end
   end
 end
