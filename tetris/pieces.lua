@@ -4,6 +4,7 @@ PIXEL_SIZE = 30
 
 local i = {}
 i.color = {0,255,255}
+i.offset = 1
 i.states = {
   {
     {0,0,0,0},
@@ -33,6 +34,7 @@ i.states = {
 
 local j = {}
 j.color = {0,0,255}
+j.offset = 2
 j.states = {
   {
     {1,0,0},
@@ -58,6 +60,7 @@ j.states = {
 
 local l = {}
 l.color = {255,170,0}
+l.offset = 2
 l.states = {
   {
     {0,0,1},
@@ -83,6 +86,7 @@ l.states = {
 
 local o = {}
 o.color = {255,255,0}
+o.offset = 3
 o.states = {
   {
     {1,1},
@@ -92,6 +96,7 @@ o.states = {
 
 local s = {}
 s.color = {0,255,0}
+s.offset = 2
 s.states = {
   {
     {0,1,1},
@@ -117,6 +122,7 @@ s.states = {
 
 local t = {}
 t.color = {153,0,255}
+t.offset = 2
 t.states = {
   {
     {0,1,0},
@@ -142,6 +148,7 @@ t.states = {
 
 local z = {}
 z.color = {255,0,0}
+z.offset = 2
 z.states = {
   {
     {1,1,0},
