@@ -1,7 +1,5 @@
 _G.lg = love.graphics
 
-PIXEL_SIZE = 20
-
 local socket = require "socket"
 
 local display
