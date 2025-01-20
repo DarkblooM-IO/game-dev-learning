@@ -3,20 +3,22 @@ _G.lg = love.graphics
 PIXEL_SIZE = 20
 
 require "Piece"
+local socket = require "socket"
 
 local display
-local tetromino
+local current_piece
 
 function love.load()
+  math.randomseed(math.floor(socket.gettime()) * 1000)
   display = lg.newCanvas(lg.getHeight() * 1/2, lg.getHeight())
-  tetromino = Piece.new({{0, 1, 0}, {1, 1, 1}}, 154, 0, 205)
+  current_piece = TETROMINOS[math.random(#TETROMINOS)]
 end
 
 function love.update(dt)
 end
 
 function love.draw()
-  tetromino:draw(display)
+  current_piece:draw(display)
 
   lg.setCanvas()
 
