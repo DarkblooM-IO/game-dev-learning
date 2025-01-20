@@ -1,6 +1,6 @@
 local pieces = {}
 
-PIXEL_SIZE = 20
+PIXEL_SIZE = 30
 
 local i = {}
 i.color = {0,255,255}
@@ -166,6 +166,11 @@ z.states = {
 }
 
 pieces.tetrominos = {i, j, l, o, s, t, z}
+pieces.PIXEL_SIZE = PIXEL_SIZE
+
+pieces.drawPixel = function (x, y, line)
+  lg.rectangle(line and "line" or "fill", x * PIXEL_SIZE - PIXEL_SIZE, y * PIXEL_SIZE - PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE)
+end
 
 pieces.drawPiece = function (piece, state, x, y)
   local color = {lg.getColor()}
@@ -173,9 +178,9 @@ pieces.drawPiece = function (piece, state, x, y)
     for px = 1, #piece.states[state][py] do
       if piece.states[state][py][px] == 1 then
         lg.setColor(love.math.colorFromBytes(piece.color))
-        lg.rectangle("fill", x + (px * PIXEL_SIZE - PIXEL_SIZE), y + (py * PIXEL_SIZE - PIXEL_SIZE), PIXEL_SIZE, PIXEL_SIZE)
+        pieces.drawPixel(x + px, y + py)
         lg.setColor(0,0,0)
-        lg.rectangle("line", x + (px * PIXEL_SIZE - PIXEL_SIZE), y + (py * PIXEL_SIZE - PIXEL_SIZE), PIXEL_SIZE, PIXEL_SIZE)
+        pieces.drawPixel(x + px, y + py, true)
       end
     end
   end
