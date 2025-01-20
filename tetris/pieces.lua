@@ -168,6 +168,7 @@ z.states = {
 pieces.tetrominos = {i, j, l, o, s, t, z}
 
 pieces.drawPiece = function (piece, state, x, y)
+  local color = {lg.getColor()}
   for py = 1, #piece.states[state] do
     for px = 1, #piece.states[state][py] do
       if piece.states[state][py][px] == 1 then
@@ -178,6 +179,7 @@ pieces.drawPiece = function (piece, state, x, y)
       end
     end
   end
+  lg.setColor(color)
 end
 
 return pieces

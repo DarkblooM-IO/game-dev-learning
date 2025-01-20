@@ -18,13 +18,17 @@ function love.update(dt)
 end
 
 function love.draw()
-  pieces.drawPiece(current_piece, current_state, 20, 20)
-  -- lg.setCanvas(display)
-  --
-  -- local x = (lg.getWidth() / 2) - (display:getWidth() / 2)
-  -- local y = (lg.getHeight() / 2) - (display:getHeight() / 2)
-  -- lg.setCanvas()
-  -- lg.draw(display, x, y)
+  lg.setCanvas(display)
+  lg.setColor(0, 0, 0)
+  lg.rectangle("fill", 0, 0, display:getWidth(), display:getHeight())
+  lg.setColor(1, 1, 1)
+
+  pieces.drawPiece(current_piece, current_state, 0, 0)
+
+  local x = (lg.getWidth() / 2) - (display:getWidth() / 2)
+  local y = (lg.getHeight() / 2) - (display:getHeight() / 2)
+  lg.setCanvas()
+  lg.draw(display, x, y)
 end
 
 function love.keypressed(key, scancode, isrepeat)
