@@ -93,6 +93,6 @@ function love.draw()
   lg.rectangle("fill", ball.pos.x, ball.pos.y, 10, 10)
 end
 
-function love.keypressed(key, scancode, isrepeat)
+function love.keypressed(key, scancode)
   if scancode == "escape" then love.event.quit() end
 end
