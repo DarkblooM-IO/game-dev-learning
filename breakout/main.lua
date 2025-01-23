@@ -1,7 +1,7 @@
-_G.lg = love.graphics
-_G.lk = love.keyboard
-
 local ut = require "utils"
+
+_G.lg   = love.graphics
+_G.lk   = love.keyboard
 _G.Vec2 = ut.Vec2
 
 PADDLE_SIZE  = {w = 100, h = 10}
@@ -23,22 +23,25 @@ function love.load()
 
   ball = {}
     ball.pos = Vec2.new(centerOnPlayer())
-    ball.vel = Vec2.new(0,0)
+    ball.vel = Vec2.new()
+    ball.inPlayerRange = function () return ball.pos.x >= player.pos.x and ball.pos.x + BALL_SIZE <= player.pos.x + PADDLE_SIZE.w and ball.pos.y + BALL_SIZE >= player.pos.y end
+    ball.shouldBounceH = function () return ball.pos.x <= 0 or ball.pos.x + BALL_SIZE >= lg.getWidth() end
+    ball.shouldBounceV = function () return ball.pos.y <= 0 or ball.inPlayerRange() end
 end
 
 function love.update(dt)
-  if (lk.isDown("left") and player.pos.x > 0) then player.pos.x = player.pos.x - PADDLE_SPEED * dt end
+  if (lk.isDown("left")  and player.pos.x > 0) then player.pos.x = player.pos.x - PADDLE_SPEED * dt end
   if (lk.isDown("right") and player.pos.x + PADDLE_SIZE.w < lg.getWidth()) then player.pos.x = player.pos.x + PADDLE_SPEED * dt end
 
-  if (ball.vel == Vec2.new(0,0)) then
-    if (lk.isDown("space")) then
-      ball.vel = Vec2.new(0, -BALL_SPEED)
-    else
-      ball.pos = Vec2.new(centerOnPlayer())
-    end
+  if (ball.vel == Vec2.new()) then
+    if (lk.isDown("space")) then ball.vel = Vec2.new(100, -BALL_SPEED)
+    else ball.pos = Vec2.new(centerOnPlayer()) end
   end
 
   ball.pos = ball.pos + ball.vel * dt
+
+  if (ball.shouldBounceH()) then ball.vel.x = -ball.vel.x end
+  if (ball.shouldBounceV()) then ball.vel.y = -ball.vel.y end
 end
 
 function love.draw()
