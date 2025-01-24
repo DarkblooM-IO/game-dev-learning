@@ -12,6 +12,13 @@ BALL_SPEED   = PADDLE_SPEED * 0.7 -- 70% of paddle speed
 local player
 local ball
 
+local function overlap(a,b)
+  return not (a.x > b.x + b.w 
+           or a.y > b.y + b.h 
+           or a.x + a.w < b.x 
+           or a.y + a.h < b.y)
+end
+
 local function centerOnPlayer()
   return player.pos.x + (PADDLE_SIZE.w / 2) - (BALL_SIZE / 2), player.pos.y - PADDLE_SIZE.h * 2
 end
