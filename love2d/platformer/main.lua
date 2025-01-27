@@ -4,7 +4,7 @@ _G.lk = love.keyboard
 local ent = require "utils.entities"
 local tick = require "utils.tick"
 
-RUN_SPEED       = 500
+RUN_SPEED = 500
 
 local player
 
