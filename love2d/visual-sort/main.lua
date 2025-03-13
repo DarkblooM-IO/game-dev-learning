@@ -8,12 +8,6 @@ local list
 local start
 local i
 
-local function drawList(list)
-  for ii = 1, #list do
-    print(string.rep("#", list[ii]))
-  end
-end
-
 function love.load()
   math.randomseed(os.time())
   list = {}
