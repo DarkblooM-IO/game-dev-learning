@@ -9,10 +9,10 @@ PhysicsEntity.__index = PhysicsEntity
 function PhysicsEntity.new(x,y, w,h, dyn, vel)
   local self = setmetatable({}, PhysicsEntity)
 
-  self.pos   = ut.Vec2.new(x,y)
-  self.vel   = vel or ut.Vec2.new(0,0)
-  self.size  = {w = w, h = h}
-  self.dyn   = dyn or true
+  self.pos  = ut.Vec2.new(x,y)
+  self.vel  = vel or ut.Vec2.new(0,0)
+  self.size = {w = w, h = h}
+  self.dyn  = dyn or true
 
   return self
 end
